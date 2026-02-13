@@ -1878,6 +1878,10 @@
                 <button id="btnHeaderProducts" class="btn-header" onclick="openProducts()">📦 Produk</button>
                 <button id="btnHeaderReports" class="btn-header" onclick="openReports()">📊 Laporan</button>
                 <button id="btnHeaderSettings" class="btn-header" onclick="openSettings()">⚙️ Pengaturan</button>
+                <button id="installBtn" class="btn-header" onclick="installApp()"
+                    style="display:none;background:var(--success);color:white;border-color:var(--success)">
+                    📲 Install App
+                </button>
                 
                 <div class="user-info">
                     <div class="user-info-text">
@@ -3064,7 +3068,7 @@ function login() {
 
     const user = users[username];
     if (!user) {
-        alert('Username tidak ditemukan!\n\nUsername tersedia:\n\u2022 admin\n\u2022 kasir\n\u2022 owner');
+        alert('Username tidak ditemukan!');
         return;
     }
 
@@ -6070,15 +6074,17 @@ if ('serviceWorker' in navigator) {
         // Prompt install ke home screen
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', e => {
-            e.preventDefault();
+            e.preventDefault();   // cegah banner otomatis browser
             deferredPrompt = e;
-            // Tampilkan tombol install jika ada
+            // Tampilkan tombol Install App di header
             const btn = document.getElementById('installBtn');
             if (btn) btn.style.display = 'flex';
+            console.log('[PWA] Install prompt ready');
         });
 
         window.addEventListener('appinstalled', () => {
             console.log('[PWA] App installed!');
+            deferredPrompt = null;
             const btn = document.getElementById('installBtn');
             if (btn) btn.style.display = 'none';
         });
